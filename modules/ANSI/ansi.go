@@ -17,5 +17,5 @@ const (
 )
 
 func PrintTitle() {
-	fmt.Printf(WarningColor, "---- DataTerm starting ----\n")
+	fmt.Printf(WarningColor, "----| DataTerm |----\n")
 }

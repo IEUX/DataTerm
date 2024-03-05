@@ -23,7 +23,6 @@ var (
 )
 
 func ReadFlags() (Credentials, string) {
-	log.Printf(ansi.InfoColor, "[INIT] Retrieving flags parameters")
 	creds := flag.String("host", "", fmt.Sprintf(ansi.WarningColor, "[REQUIRED] -host=user@host"))
 	port := flag.Int("p", 3306, "database port number")
 	driver := flag.String("driver", "mysql", "Driver for the database <link table>")
@@ -32,14 +31,14 @@ func ReadFlags() (Credentials, string) {
 	//Check Creds
 	isOk, err := ValidCreds(*creds)
 	if err != nil {
-		log.Fatalf(ansi.ErrorColor, "[INIT] Credentials are not valid: "+err.Error())
+		log.Fatalf(ansi.ErrorColor, "[INIT] "+err.Error())
 	}
 	if !isOk {
 		log.Fatalf(ansi.ErrorColor, "[INIT] Fail to load credentials")
 	}
 	//Check database
 	if *database == "" {
-		log.Fatalf(ansi.ErrorColor, "[INIT] database name is required (see required flags)")
+		log.Fatalf(ansi.ErrorColor, "[INIT] database name is required (see required flags -h)")
 	}
 	user, host := strings.Split(*creds, "@")[0], strings.Split(*creds, "@")[1]
 	//Check Driver
@@ -50,11 +49,10 @@ func ReadFlags() (Credentials, string) {
 }
 
 func ValidCreds(creds string) (bool, error) {
-	log.Printf(ansi.InfoColor, "[INIT] Checking Credentials")
 	//Check length and format of credentials
 	splitCreds := strings.Split(creds, "@")
 	if creds == "" {
-		return false, fmt.Errorf("host is required (see required flags)")
+		return false, fmt.Errorf("host is required (see required flags -h)")
 	}
 	if len(splitCreds) != 2 {
 		return false, fmt.Errorf("creds format must be user@host")
@@ -68,7 +66,6 @@ func ValidCreds(creds string) (bool, error) {
 }
 
 func ValidDriver(driver string) bool {
-	log.Printf(ansi.InfoColor, "[INIT] Checking driver compability")
 	availableDrivers := map[string]bool{
 		"mysql":    true,
 		"postgres": true,

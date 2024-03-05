@@ -25,14 +25,14 @@ func navigationView(g *gocui.Gui) error {
 		if err != gocui.ErrUnknownView {
 			return err
 		}
-		if err := refreshTablesTreeView(g, v); err != nil {
+		if err := refreshTablesTree(g, v); err != nil {
 			return nil
 		}
 	}
 	return nil
 }
 
-func refreshTablesTreeView(g *gocui.Gui, v *gocui.View) error {
+func refreshTablesTree(g *gocui.Gui, v *gocui.View) error {
 	//Tables view
 	if _, err := g.SetCurrentView("Nav"); err != nil {
 		return err
@@ -71,7 +71,7 @@ func displayTablesTree(v *gocui.View, tree []string) {
 
 //Table columns tree
 
-func tableColumnTreeView(g *gocui.Gui, v *gocui.View) error {
+func tableColumnTree(g *gocui.Gui, v *gocui.View) error {
 	if _, err := g.SetCurrentView("Nav"); err != nil {
 		return err
 	}
@@ -82,6 +82,8 @@ func tableColumnTreeView(g *gocui.Gui, v *gocui.View) error {
 	v.Title = "[Esc] " + tables[selectedTableIndex]
 	//Content
 	columns = database.GetAllColumns(tables[selectedTableIndex])
+	selectedTableIndex = 0
+	v.SetCursor(0, 0)
 	displayTablesTree(v, columns)
 	return nil
 }

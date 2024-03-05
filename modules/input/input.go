@@ -9,7 +9,7 @@ import (
 )
 
 func GetPassword() string {
-	fmt.Print("[DATABASE CNX] Enter password: ")
+	fmt.Print("Enter host password: ")
 	password, err := term.ReadPassword(int(syscall.Stdin))
 	if err != nil {
 		log.Fatal("[INIT] Fail to read user input for password")

@@ -1,7 +1,6 @@
 package database
 
 import (
-	ansi "DataTerm/modules/ANSI"
 	"DataTerm/modules/credentials"
 	"database/sql"
 	"fmt"
@@ -30,8 +29,6 @@ func OpenDB() {
 	err = CNX.Ping()
 	if err != nil {
 		log.Fatal("Fail to ping database:" + err.Error())
-	} else {
-		log.Printf(ansi.ValidColor, "[DATABASE CNX] Database connected (PONG!)")
 	}
 }
 

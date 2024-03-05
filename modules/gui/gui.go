@@ -16,6 +16,7 @@ func Display() {
 	}
 	defer g.Close()
 	g.InputEsc = true
+	g.Highlight = true
 	if err := layout(g); err != nil {
 		log.Fatalln(err)
 	}
@@ -37,6 +38,14 @@ func layout(g *gocui.Gui) error {
 			return err
 		}
 		if err := testView(g); err != nil {
+			return err
+		}
+		//TODO OUTPUT VIEW
+		if err := outputView(g); err != nil {
+			return err
+		}
+		//TODO CONSOLE VIEW
+		if err := consoleView(g); err != nil {
 			return err
 		}
 		return nil

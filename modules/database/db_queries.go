@@ -2,7 +2,10 @@ package database
 
 import (
 	ansi "DataTerm/modules/ANSI"
+	"fmt"
 	"log"
+
+	"github.com/jroimartin/gocui"
 )
 
 func GetAllTables() []string {
@@ -52,4 +55,45 @@ func GetAllColumns(table string) []string {
 		log.Fatal(err)
 	}
 	return columns
+}
+
+func ExecuteUserQuery(g *gocui.Gui, query string) error {
+	output, err := g.View("Output")
+	if err != nil {
+		QueryError(output, err)
+		log.Fatalln(err)
+	}
+	rows, err := CNX.Query(query)
+	if err != nil {
+		QueryError(output, err)
+		return nil
+	}
+	columns, err := rows.Columns()
+	if err != nil {
+		QueryError(output, err)
+		return nil
+	}
+	columnsType, err := rows.ColumnTypes()
+	if err != nil {
+		QueryError(output, err)
+		return nil
+	}
+
+	output.Clear()
+	fmt.Fprint(output, "| ")
+	for i := 0; i < len(columns); i++ {
+		fmt.Fprint(output, columns[i]+" | ")
+	}
+	fmt.Fprint(output, "\n| ")
+	for i := 0; i < len(columns); i++ {
+		fmt.Fprint(output, columnsType[i].DatabaseTypeName())
+		fmt.Fprint(output, " | ")
+	}
+
+	return nil
+}
+
+func QueryError(output *gocui.View, err error) {
+	output.Clear()
+	fmt.Fprintf(output, ansi.ErrorColor, err)
 }

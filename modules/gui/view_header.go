@@ -15,13 +15,12 @@ func headerView(g *gocui.Gui) error {
 		if err != gocui.ErrUnknownView {
 			return err
 		}
-		fmt.Fprintf(v, fmt.Sprintf(ansi.WarningColor, "DataTerm-- "))
+		fmt.Fprintf(v, ansi.WarningColor, "DataTerm-- ")
 		fmt.Fprintf(v, "connected to ")
-		fmt.Fprintf(v, fmt.Sprintf(ansi.Green, database.Creds.User+"@"+database.Creds.Host))
+		fmt.Fprintf(v, ansi.Green, database.Creds.User+"@"+database.Creds.Host)
 		fmt.Fprintf(v, " on ")
-		fmt.Fprintf(v, fmt.Sprintf(ansi.B_Cyan, database.Creds.Database))
+		fmt.Fprintf(v, ansi.B_Cyan, database.Creds.Database)
 		fmt.Fprintf(v, " database")
-		fmt.Fprintf(v, "%s", len(tables))
 	}
 
 	//Made by view
@@ -30,7 +29,7 @@ func headerView(g *gocui.Gui) error {
 			return err
 		}
 		fmt.Fprintf(v, "> made by")
-		fmt.Fprintf(v, fmt.Sprintf(ansi.Purple, " I3UX_"))
+		fmt.Fprintf(v, ansi.Purple, " I3UX_")
 	}
 	return nil
 }

@@ -4,6 +4,25 @@ import (
 	"github.com/jroimartin/gocui"
 )
 
+func kb_Navigation(g *gocui.Gui) error {
+	if err := g.SetKeybinding("Nav", gocui.KeyArrowUp, gocui.ModNone, previousTable); err != nil {
+		return err
+	}
+	if err := g.SetKeybinding("Nav", gocui.KeyArrowDown, gocui.ModNone, nextTable); err != nil {
+		return err
+	}
+	if err := g.SetKeybinding("Nav", gocui.KeyEnter, gocui.ModNone, enter); err != nil {
+		return err
+	}
+	if err := g.SetKeybinding("Nav", gocui.KeyEsc, gocui.ModNone, escape); err != nil {
+		return err
+	}
+	if err := g.SetKeybinding("Nav", gocui.KeyCtrlT, gocui.ModNone, refreshTest); err != nil {
+		return err
+	}
+	return nil
+}
+
 func previousTable(g *gocui.Gui, v *gocui.View) error {
 	var tree []string
 	if currentTree == "tables" {
@@ -40,11 +59,11 @@ func enter(g *gocui.Gui, v *gocui.View) error {
 	if currentTree == "tables" {
 		currentTree = "columns"
 		lastIndex = selectedTableIndex
-		selectedTableIndex = 0
 		v.SetCursor(0, selectedTableIndex)
-		return tableColumnTreeView(g, v)
+		return tableColumnTree(g, v)
 	}
 	if currentTree == "columns" {
+		//TODO SELECT * FROM <Table>
 		return nil
 	}
 	return nil
@@ -55,13 +74,7 @@ func escape(g *gocui.Gui, v *gocui.View) error {
 		currentTree = "tables"
 		selectedTableIndex = lastIndex
 		v.SetCursor(0, selectedTableIndex)
-		return refreshTablesTreeView(g, v)
+		return refreshTablesTree(g, v)
 	}
 	return nil
-
 }
-
-// func openTable(g *gocui.Gui, v *gocui.View) error {
-// 	g.Update(tableView)
-// 	return nil
-// }
